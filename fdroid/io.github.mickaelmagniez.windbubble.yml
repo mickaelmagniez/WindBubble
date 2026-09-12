@@ -1,7 +1,6 @@
-# Copy this file to fdroiddata as metadata/io.github.mickaelmagniez.windbubble.yml
 Categories:
-  - Sports & Health
   - Navigation
+  - Sports & Health
 License: GPL-3.0-only
 AuthorName: Mickael MAGNIEZ
 SourceCode: https://github.com/mickaelmagniez/WindBubble
