@@ -1,0 +1,8 @@
+Première version.
+
+- Bulle flottante indiquant le vent par rapport à votre direction de déplacement
+- Cap donné par le GPS, relayé par la boussole à l'arrêt
+- Vent, rafales et température en direct via Open-Meteo, sans compte
+- Composantes de face/dos et de travers, en km/h, mph, m/s ou nœuds
+- Intervalle de rafraîchissement, taille, opacité et position de la bulle réglables
+- Anglais et français, aucun pistage, aucune publicité

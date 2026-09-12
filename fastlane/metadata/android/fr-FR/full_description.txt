@@ -1,0 +1,20 @@
+Wind Bubble affiche un petit cadran flottant par-dessus votre application de navigation et montre
+d’où vient le vent par rapport à votre direction de déplacement : de face, de travers ou de dos.
+
+Le cadran est verrouillé sur votre cap — le haut est toujours votre direction — et un repère coloré
+se place sur l’anneau à l’angle d’où souffle le vent : rouge en plein visage, orange de travers,
+vert quand il vous pousse.
+
+Fonctionnalités :
+
+* Bulle flottante par-dessus n’importe quelle application, déplaçable, dépliable d’un appui
+* Vent, rafales et température en direct via Open-Meteo (sans compte ni clé d’API)
+* Composantes de face/dos et de travers, avec le côté d’où souffle le vent
+* Vitesse en km/h, mph, m/s ou nœuds
+* Intervalle de rafraîchissement, taille et opacité de la bulle réglables
+* Aucun pistage, aucune analyse d’usage, aucune publicité
+
+Votre position ne quitte jamais l’appareil, hormis des coordonnées arrondies envoyées à Open-Meteo
+pour récupérer le vent local.
+
+Données météo fournies par Open-Meteo.com, sous licence CC BY 4.0.

@@ -1,0 +1,128 @@
+name: Release
+
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to build (e.g. v1.0.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Signed release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      # F-Droid and IzzyOnDroid read the version from the tagged sources. A tag that disagrees with
+      # the build file silently breaks their auto-update, so it is a hard failure here.
+      - name: Check the tag matches the app version
+        id: version
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          case "$TAG" in
+            v[0-9]*.[0-9]*.[0-9]*) ;;
+            *) echo "::error::tag '$TAG' is not semver-shaped (expected vX.Y.Z)"; exit 1 ;;
+          esac
+          VERSION="${TAG#v}"
+          BUILD_NAME=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts)
+          BUILD_CODE=$(grep -oP 'versionCode = \K[0-9]+' app/build.gradle.kts)
+          if [ "$VERSION" != "$BUILD_NAME" ]; then
+            echo "::error::tag $TAG does not match versionName $BUILD_NAME in app/build.gradle.kts"
+            exit 1
+          fi
+          CHANGELOG="fastlane/metadata/android/en-US/changelogs/$BUILD_CODE.txt"
+          if [ ! -s "$CHANGELOG" ]; then
+            echo "::error::missing changelog $CHANGELOG (stores show it to users)"
+            exit 1
+          fi
+          {
+            echo "version=$VERSION"
+            echo "code=$BUILD_CODE"
+            echo "changelog=$CHANGELOG"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Run tests
+        run: ./gradlew testDebugUnitTest lintDebug --no-daemon
+
+      # The keystore never lives in the repository: it is stored as a base64 secret.
+      - name: Restore keystore
+        env:
+          SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$SIGNING_KEYSTORE_BASE64" ]; then
+            echo "::error::SIGNING_KEYSTORE_BASE64 secret is not set"
+            exit 1
+          fi
+          echo "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
+
+      - name: Build signed APK and AAB
+        env:
+          SIGNING_KEYSTORE_PATH: ${{ runner.temp }}/release.jks
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: ./gradlew assembleRelease bundleRelease --no-daemon
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks"
+
+      # An unsigned APK would be rejected by IzzyOnDroid and uninstallable as an update.
+      - name: Verify the signature and name the artifacts
+        id: artifacts
+        run: |
+          APK=app/build/outputs/apk/release/app-release.apk
+          AAB=app/build/outputs/bundle/release/app-release.aab
+          if [ ! -f "$APK" ]; then
+            echo "::error::no signed APK produced (signing credentials missing?)"
+            exit 1
+          fi
+          APKSIGNER=$(find "$ANDROID_HOME" -name apksigner -type f | sort -r | head -1)
+          "$APKSIGNER" verify --print-certs "$APK"
+          mkdir -p dist
+          cp "$APK" "dist/WindBubble-${{ steps.version.outputs.version }}.apk"
+          cp "$AAB" "dist/WindBubble-${{ steps.version.outputs.version }}.aab"
+          sha256sum dist/* > dist/checksums.txt
+          cat dist/checksums.txt
+
+      - name: Build release notes
+        run: |
+          {
+            cat "${{ steps.version.outputs.changelog }}"
+            echo
+            echo "---"
+            echo
+            echo "**Install:** download the \`.apk\` — it is signed with the project key."
+            echo "The \`.aab\` is only useful for uploading to the Play Store."
+            echo
+            echo '```'
+            cat dist/checksums.txt
+            echo '```'
+          } > release-notes.md
+
+      # IzzyOnDroid polls GitHub Releases and picks the APK up on its own; F-Droid watches the tags.
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          name: Wind Bubble ${{ steps.version.outputs.version }}
+          body_path: release-notes.md
+          files: dist/*

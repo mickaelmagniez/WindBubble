@@ -1,0 +1,8 @@
+First release.
+
+- Floating bubble showing the wind relative to your direction of travel
+- Heading from the GPS course, with the device compass taking over when you stop
+- Live wind, gusts and temperature from Open-Meteo, no account needed
+- Head/tail and crosswind components, in km/h, mph, m/s or knots
+- Adjustable refresh interval, bubble size, opacity and position
+- English and French, no tracking, no advertising

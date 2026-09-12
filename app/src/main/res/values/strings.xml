@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="en">
+    <string name="app_name" translatable="false">Wind Bubble</string>
+
+    <!-- Wind categories -->
+    <string name="wind_headwind">Headwind</string>
+    <string name="wind_head_crosswind">Head crosswind</string>
+    <string name="wind_crosswind">Crosswind</string>
+    <string name="wind_tail_crosswind">Tail crosswind</string>
+    <string name="wind_tailwind">Tailwind</string>
+
+    <!-- Home -->
+    <string name="home_title">Wind Bubble</string>
+    <string name="home_settings">Settings</string>
+    <string name="home_bubble_card_title">Floating bubble</string>
+    <string name="home_bubble_card_subtitle">Shows the wind on top of your navigation app.</string>
+    <string name="home_waiting_location">Waiting for a GPS fix…</string>
+    <string name="home_waiting_wind">Fetching the wind for your position…</string>
+    <string name="home_waiting_heading">Wind is in. Start moving, or point the phone where you are going, to get your heading.</string>
+    <string name="home_idle">Start moving to see how the wind hits you.</string>
+    <string name="home_heading_stale">Heading held from your last move</string>
+    <string name="home_heading_compass">Heading from the compass — point the phone where you are going</string>
+    <string name="home_detail_wind">Wind</string>
+    <string name="home_detail_gusts">Gusts</string>
+    <string name="home_detail_headwind">Headwind</string>
+    <string name="home_detail_tailwind">Tailwind</string>
+    <string name="home_detail_crosswind">Crosswind</string>
+    <string name="home_detail_from_left">from the left</string>
+    <string name="home_detail_from_right">from the right</string>
+    <string name="home_detail_heading">Heading</string>
+    <string name="home_detail_speed">Your speed</string>
+    <string name="home_detail_temperature">Temperature</string>
+    <string name="home_data_source">Wind data by Open-Meteo</string>
+
+    <!-- Permissions -->
+    <string name="permission_location_title">Location access</string>
+    <string name="permission_location_rationale">Your GPS position and heading are needed to compare the wind with your direction of travel. They never leave your device apart from the coordinates sent to the weather service.</string>
+    <string name="permission_location_action">Grant location</string>
+    <string name="permission_overlay_title">Display over other apps</string>
+    <string name="permission_overlay_rationale">Required to float the wind bubble on top of your navigation app.</string>
+    <string name="permission_overlay_action">Allow overlay</string>
+    <string name="permission_overlay_hint">Find “Wind Bubble” in the list and turn the overlay on.</string>
+    <string name="permission_notifications_title">Notifications</string>
+    <string name="permission_notifications_rationale">Android shows a notification while the bubble is running.</string>
+    <string name="permission_notifications_action">Allow notifications</string>
+
+    <!-- Errors -->
+    <string name="error_location_unavailable">Location is unavailable. Check that GPS is enabled.</string>
+    <string name="error_wind_fetch">Wind update failed: %1$s</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_back">Back</string>
+    <string name="settings_units_title">Speed unit</string>
+    <string name="settings_refresh_title">Wind refresh</string>
+    <string name="settings_refresh_value">Every %1$d min</string>
+    <string name="settings_refresh_hint">The wind is also refreshed whenever you travel about 200 metres.</string>
+    <string name="settings_bubble_title">Bubble appearance</string>
+    <string name="settings_bubble_opacity">Opacity</string>
+    <string name="settings_bubble_scale">Size</string>
+    <string name="settings_bubble_gusts">Show gusts</string>
+    <string name="settings_bubble_reset_position">Reset bubble position</string>
+    <string name="settings_about_title">About</string>
+    <string name="settings_about_body">Wind Bubble compares the live wind direction from Open-Meteo with your GPS heading. The dial always points up in the direction you travel.</string>
+
+    <!-- Overlay -->
+    <string name="overlay_notification_channel">Wind bubble</string>
+    <string name="overlay_notification_channel_description">Keeps the wind bubble running while you navigate.</string>
+    <string name="overlay_notification_title">Wind bubble is running</string>
+    <string name="overlay_notification_text">Tap to open, or stop it from here.</string>
+    <string name="overlay_notification_stop">Stop</string>
+    <string name="overlay_close">Close bubble</string>
+    <!-- "max" is short for "maximum gust", not a countable noun: no plural needed. -->
+    <string name="bubble_summary_gust" tools:ignore="PluralsCandidate">%1$d max</string>
+    <string name="bubble_summary_from">from %1$s</string>
+    <string name="overlay_waiting" translatable="false">…</string>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wind_headwind">Vent de face</string>
+    <string name="wind_head_crosswind">Trois-quarts face</string>
+    <string name="wind_crosswind">Vent de travers</string>
+    <string name="wind_tail_crosswind">Trois-quarts arrière</string>
+    <string name="wind_tailwind">Vent de dos</string>
+
+    <string name="home_title">Wind Bubble</string>
+    <string name="home_settings">Réglages</string>
+    <string name="home_bubble_card_title">Bulle flottante</string>
+    <string name="home_bubble_card_subtitle">Affiche le vent par-dessus votre application de navigation.</string>
+    <string name="home_waiting_location">En attente d\'un point GPS…</string>
+    <string name="home_waiting_wind">Récupération du vent pour votre position…</string>
+    <string name="home_waiting_heading">Vent récupéré. Mettez-vous en mouvement, ou orientez le téléphone dans votre direction, pour obtenir le cap.</string>
+    <string name="home_idle">Mettez-vous en mouvement pour voir d\'où vient le vent.</string>
+    <string name="home_heading_stale">Cap conservé depuis votre dernier déplacement</string>
+    <string name="home_heading_compass">Cap donné par la boussole — orientez le téléphone dans votre direction</string>
+    <string name="home_detail_wind">Vent</string>
+    <string name="home_detail_gusts">Rafales</string>
+    <string name="home_detail_headwind">Vent de face</string>
+    <string name="home_detail_tailwind">Vent de dos</string>
+    <string name="home_detail_crosswind">Vent de travers</string>
+    <string name="home_detail_from_left">par la gauche</string>
+    <string name="home_detail_from_right">par la droite</string>
+    <string name="home_detail_heading">Cap</string>
+    <string name="home_detail_speed">Votre vitesse</string>
+    <string name="home_detail_temperature">Température</string>
+    <string name="home_data_source">Données de vent fournies par Open-Meteo</string>
+
+    <string name="permission_location_title">Accès à la position</string>
+    <string name="permission_location_rationale">La position et le cap GPS servent à comparer le vent à votre direction de déplacement. Seules les coordonnées envoyées au service météo quittent l\'appareil.</string>
+    <string name="permission_location_action">Autoriser la position</string>
+    <string name="permission_overlay_title">Affichage par-dessus les autres applis</string>
+    <string name="permission_overlay_rationale">Nécessaire pour faire flotter la bulle au-dessus de votre application de navigation.</string>
+    <string name="permission_overlay_action">Autoriser la superposition</string>
+    <string name="permission_overlay_hint">Trouvez « Wind Bubble » dans la liste et activez la superposition.</string>
+    <string name="permission_notifications_title">Notifications</string>
+    <string name="permission_notifications_rationale">Android affiche une notification tant que la bulle fonctionne.</string>
+    <string name="permission_notifications_action">Autoriser les notifications</string>
+
+    <string name="error_location_unavailable">Position indisponible. Vérifiez que le GPS est activé.</string>
+    <string name="error_wind_fetch">Échec de la mise à jour du vent : %1$s</string>
+
+    <string name="settings_title">Réglages</string>
+    <string name="settings_back">Retour</string>
+    <string name="settings_units_title">Unité de vitesse</string>
+    <string name="settings_refresh_title">Actualisation du vent</string>
+    <string name="settings_refresh_value">Toutes les %1$d min</string>
+    <string name="settings_refresh_hint">Le vent est aussi actualisé dès que vous parcourez environ 200 mètres.</string>
+    <string name="settings_bubble_title">Apparence de la bulle</string>
+    <string name="settings_bubble_opacity">Opacité</string>
+    <string name="settings_bubble_scale">Taille</string>
+    <string name="settings_bubble_gusts">Afficher les rafales</string>
+    <string name="settings_bubble_reset_position">Réinitialiser la position de la bulle</string>
+    <string name="settings_about_title">À propos</string>
+    <string name="settings_about_body">Wind Bubble compare le vent en temps réel fourni par Open-Meteo à votre cap GPS. Le haut du cadran indique toujours votre direction de déplacement.</string>
+
+    <string name="overlay_notification_channel">Bulle de vent</string>
+    <string name="overlay_notification_channel_description">Maintient la bulle active pendant votre navigation.</string>
+    <string name="overlay_notification_title">La bulle de vent est active</string>
+    <string name="overlay_notification_text">Touchez pour ouvrir l\'application, ou arrêtez-la ici.</string>
+    <string name="overlay_notification_stop">Arrêter</string>
+    <string name="overlay_close">Fermer la bulle</string>
+    <string name="bubble_summary_gust">%1$d max</string>
+    <string name="bubble_summary_from">de %1$s</string>
+</resources>

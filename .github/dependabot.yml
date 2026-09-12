@@ -1,0 +1,20 @@
+version: 2
+updates:
+  # The Android ecosystem moves fast; grouped weekly PRs keep the noise down.
+  - package-ecosystem: gradle
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      androidx:
+        patterns: [ "androidx.*" ]
+      kotlin:
+        patterns: [ "org.jetbrains.kotlin*", "com.google.devtools.ksp*" ]
+      other:
+        patterns: [ "*" ]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

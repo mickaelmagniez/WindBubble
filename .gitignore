@@ -1,0 +1,19 @@
+*.iml
+.gradle/
+local.properties
+.idea/
+.DS_Store
+build/
+captures/
+.externalNativeBuild
+.cxx
+*.apk
+*.aab
+keystore.properties
+*.jks
+*.keystore
+
+# Local deployment notes, not part of the published project
+DEPLOY.md
+fdroid.md
+izzy.md
