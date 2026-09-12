@@ -100,7 +100,8 @@ jobs:
           mkdir -p dist
           cp "$APK" "dist/WindBubble-${{ steps.version.outputs.version }}.apk"
           cp "$AAB" "dist/WindBubble-${{ steps.version.outputs.version }}.aab"
-          sha256sum dist/* > dist/checksums.txt
+          # Computed from inside dist/ so the file names match what users download.
+          (cd dist && sha256sum ./*.apk ./*.aab | sed 's| \./| |' > checksums.txt)
           cat dist/checksums.txt
 
       - name: Build release notes
