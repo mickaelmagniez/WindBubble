@@ -1,0 +1,1 @@
+- Build reproductible : l'APK F-Droid est désormais celui signé par le développeur, vous pouvez passer de F-Droid à IzzyOnDroid ou GitHub sans réinstaller

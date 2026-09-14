@@ -1,0 +1,1 @@
+- Reproducible build: the F-Droid APK is now the one signed by the developer, so you can switch between F-Droid, IzzyOnDroid and GitHub without reinstalling

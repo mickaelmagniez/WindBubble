@@ -69,6 +69,14 @@ android {
         includeInBundle = false
     }
 
+    packaging {
+        jniLibs {
+            // Stripping depends on whether an NDK is installed (the GitHub runner has one, F-Droid's
+            // build server does not), which would make the APKs differ. Ship the libraries as-is.
+            keepDebugSymbols += "**/*.so"
+        }
+    }
+
     buildFeatures {
         compose = true
     }
@@ -77,6 +85,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+}
+
+// The generated baseline profile (assets/dexopt/baseline.prof) is not byte-for-byte stable between
+// builds, which breaks F-Droid's reproducible-build check against the published APK.
+tasks.matching { "ArtProfile" in it.name }.configureEach {
+    enabled = false
 }
 
 kotlin {
