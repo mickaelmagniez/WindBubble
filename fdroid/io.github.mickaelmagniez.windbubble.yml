@@ -11,7 +11,8 @@ AutoName: Wind Bubble
 
 RepoType: git
 Repo: https://github.com/mickaelmagniez/WindBubble.git
-Binaries: https://github.com/mickaelmagniez/WindBubble/releases/download/v%v/WindBubble-%v.apk
+Binaries: 
+  https://github.com/mickaelmagniez/WindBubble/releases/download/v%v/WindBubble-%v.apk
 
 Builds:
   - versionName: 1.0.1
