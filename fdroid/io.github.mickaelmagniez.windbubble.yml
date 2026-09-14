@@ -1,3 +1,6 @@
+AntiFeatures:
+  TetheredNet:
+    en-US: Weather data comes from the Open-Meteo API (api.open-meteo.com).
 Categories:
   - Navigation
   - Sports & Health
