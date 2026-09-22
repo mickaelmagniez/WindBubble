@@ -1,0 +1,1 @@
+- La bulle reste désormais visible quand une appli de navigation réveille l'écran verrouillé, au lieu de ne revenir qu'une fois le téléphone déverrouillé

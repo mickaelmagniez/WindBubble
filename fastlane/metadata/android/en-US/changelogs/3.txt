@@ -1,0 +1,1 @@
+- The bubble now stays visible when a navigation app wakes the screen on the lock screen, instead of coming back only once the phone is unlocked
