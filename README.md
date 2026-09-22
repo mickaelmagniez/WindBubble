@@ -50,11 +50,7 @@ The interface follows your phone language — English and French today.
 
 ### F-Droid
 
-*Coming soon — link to be added once the app is accepted.*
-
-### IzzyOnDroid
-
-*Coming soon — link to be added once the app is accepted.*
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" height="70">](https://f-droid.org/fr/packages/io.github.mickaelmagniez.windbubble/)
 
 ### Direct download
 
@@ -62,9 +58,8 @@ Grab the latest `.apk` from the [releases page](https://github.com/mickaelmagnie
 and install it. It is signed with the project key, and
 [Obtainium](https://github.com/ImranR98/Obtainium) can keep it updated automatically from there.
 
-> Note: the F-Droid build is signed with F-Droid's own key rather than mine, so you cannot switch
-> between the F-Droid version and the one from here without uninstalling first. Pick one and stay
-> with it.
+> Note: the F-Droid build is reproducible and signed with the project key, so the F-Droid version
+> and the one from here are the same APK — you can switch between them without uninstalling.
 
 **Requires Android 8.0 (API 26) or later.** On first launch the app asks for the permissions it
 needs, one after the other: location (your heading), notifications, and display over other apps (the

@@ -33,13 +33,18 @@ class OverlayWindow(
     private val owner = OverlayViewOwner()
     private var composeView: ComposeView? = null
 
+    // FLAG_SHOW_WHEN_LOCKED is deprecated for activities only; on a WindowManager window it is
+    // still the only way to survive the keyguard. Without it the system hides the bubble as soon as
+    // the lock screen shows, which happens whenever a navigation app wakes the screen before a turn.
+    @Suppress("DEPRECATION")
     private val windowParams = WindowManager.LayoutParams(
         WindowManager.LayoutParams.WRAP_CONTENT,
         WindowManager.LayoutParams.WRAP_CONTENT,
         WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
             WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED,
         PixelFormat.TRANSLUCENT,
     ).apply {
         gravity = Gravity.TOP or Gravity.START

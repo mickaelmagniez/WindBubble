@@ -22,8 +22,8 @@ jobs:
           ref: ${{ github.event.inputs.tag || github.ref }}
           fetch-depth: 0
 
-      # F-Droid and IzzyOnDroid read the version from the tagged sources. A tag that disagrees with
-      # the build file silently breaks their auto-update, so it is a hard failure here.
+      # F-Droid reads the version from the tagged sources. A tag that disagrees with the build
+      # file silently breaks its auto-update, so it is a hard failure here.
       - name: Check the tag matches the app version
         id: version
         run: |
@@ -85,7 +85,8 @@ jobs:
         if: always()
         run: rm -f "$RUNNER_TEMP/release.jks"
 
-      # An unsigned APK would be rejected by IzzyOnDroid and uninstallable as an update.
+      # An unsigned APK would be uninstallable as an update, and F-Droid checks its reproducible
+      # build against the signed one published here.
       - name: Verify the signature and name the artifacts
         id: artifacts
         run: |
@@ -119,7 +120,8 @@ jobs:
             echo '```'
           } > release-notes.md
 
-      # IzzyOnDroid polls GitHub Releases and picks the APK up on its own; F-Droid watches the tags.
+      # F-Droid watches the tags on its own; the APK attached here is what it compares its own
+      # build against.
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v3
         with:
