@@ -1,0 +1,1 @@
+- Quand le service météo est injoignable, la bulle garde le dernier vent connu au lieu d'afficher une erreur ou un tiret
