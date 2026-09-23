@@ -52,6 +52,13 @@ class ObserveRelativeWindUseCase @Inject constructor(
     private val calculateRelativeWind: CalculateRelativeWind,
 ) {
 
+    /**
+     * Last wind successfully fetched, kept across grid cells and session restarts so a failed
+     * request never blanks a reading the user already had.
+     */
+    @Volatile
+    private var lastKnownWind: WindObservation? = null
+
     @OptIn(ExperimentalCoroutinesApi::class)
     operator fun invoke(): Flow<WindSessionState> = channelFlow {
         if (!locationRepository.hasLocationPermission()) {
@@ -82,7 +89,7 @@ class ObserveRelativeWindUseCase @Inject constructor(
             .distinctUntilChanged()
             .combine(refreshIntervals()) { cell, interval -> cell to interval }
             .flatMapLatest { (cell, interval) -> pollWind(cell, interval) }
-            .onStart { emit(WindUpdate.Pending) }
+            .onStart { emit(lastKnownWind?.let(WindUpdate::Available) ?: WindUpdate.Pending) }
 
         combine(
             trackedMovements,
@@ -144,20 +151,23 @@ class ObserveRelativeWindUseCase @Inject constructor(
         }
 
     private fun pollWind(cell: GridCell, interval: Duration): Flow<WindUpdate> = flow {
-        var lastKnown: WindObservation? = null
         while (currentCoroutineContext().isActive) {
             val result = runCatching { windRepository.currentWind(cell.latitude, cell.longitude) }
             result.fold(
                 onSuccess = {
-                    lastKnown = it
+                    lastKnownWind = it
                     emit(WindUpdate.Available(it))
                 },
                 onFailure = { throwable ->
+                    val lastKnown = lastKnownWind
                     emit(
-                        WindUpdate.Failed(
-                            reason = throwable.message ?: throwable::class.simpleName.orEmpty(),
-                            lastKnown = lastKnown,
-                        ),
+                        if (lastKnown != null) {
+                            WindUpdate.Available(lastKnown)
+                        } else {
+                            WindUpdate.Failed(
+                                reason = throwable.message ?: throwable::class.simpleName.orEmpty(),
+                            )
+                        },
                     )
                 },
             )
@@ -254,12 +264,11 @@ class ObserveRelativeWindUseCase @Inject constructor(
     private sealed interface WindUpdate {
         data object Pending : WindUpdate
         data class Available(val observation: WindObservation) : WindUpdate
-        data class Failed(val reason: String, val lastKnown: WindObservation?) : WindUpdate
+        data class Failed(val reason: String) : WindUpdate
 
         fun observationOrNull(): WindObservation? = when (this) {
-            Pending -> null
+            Pending, is Failed -> null
             is Available -> observation
-            is Failed -> lastKnown
         }
     }
 

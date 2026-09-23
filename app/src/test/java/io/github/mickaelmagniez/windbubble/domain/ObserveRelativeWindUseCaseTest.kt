@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
+import java.io.IOException
 import org.junit.Test
 
 class ObserveRelativeWindUseCaseTest {
@@ -117,6 +118,42 @@ class ObserveRelativeWindUseCaseTest {
     }
 
     @Test
+    fun `a failed fetch keeps the last known wind without an error`() = runTest {
+        useCase().test {
+            skipItems(1)
+            movements.emit(movement(bearing = 90f))
+            awaitUntil { it.wind != null }
+            cancelAndIgnoreRemainingEvents()
+        }
+
+        windRepository.failing = true
+
+        useCase().test {
+            val state = awaitUntil { it.wind != null }
+
+            assertThat(state.wind?.speedMetersPerSecond).isEqualTo(10f)
+            assertThat(state.error).isNull()
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `a failed fetch without any previous wind is reported`() = runTest {
+        windRepository.failing = true
+
+        useCase().test {
+            skipItems(1)
+            movements.emit(movement(bearing = 90f))
+
+            val state = awaitUntil { it.error != null }
+
+            assertThat(state.status).isEqualTo(WindSessionState.Status.WAITING_FOR_WIND)
+            assertThat(state.wind).isNull()
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `a missing permission is reported instead of a silent stall`() = runTest {
         locationRepository.permissionGranted = false
 
@@ -155,8 +192,13 @@ class ObserveRelativeWindUseCaseTest {
         override fun movementUpdates() = movements
     }
 
-    private class FakeWindRepository : WindRepository {
-        override suspend fun currentWind(latitude: Double, longitude: Double) = WindObservation(
+    private class FakeWindRepository(var failing: Boolean = false) : WindRepository {
+        override suspend fun currentWind(latitude: Double, longitude: Double): WindObservation {
+            if (failing) throw IOException("offline")
+            return observation(latitude, longitude)
+        }
+
+        private fun observation(latitude: Double, longitude: Double) = WindObservation(
             speedMetersPerSecond = 10f,
             gustMetersPerSecond = 14f,
             directionFromDegrees = 90f,
